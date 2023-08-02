@@ -1,6 +1,6 @@
 ---
 title: Error inexplicable en el despliegue de una Azure Function
-date: 2023-08-02 01:24:00 -0500
+date: 2023-08-01 01:24:00 -0500
 categories: [Azure, Functions, Deployment, error]
 tags: [azure, azure functions, deployment, error, visual studio]     # TAG names should always be lowercase
 image:
