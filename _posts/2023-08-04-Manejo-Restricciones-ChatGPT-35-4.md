@@ -8,8 +8,10 @@ image:
   alt: ChatGPT 4 vs ChatGPT 3.5
 ---
 
+---
+>**Abstract:**
 En la era del procesamiento del lenguaje natural (NLP), cada versión de un modelo puede tener sus fortalezas únicas. Este post compara el manejo de restricciones entre las versiones 3.5 y 4 de ChatGPT, analizando las diferencias en su comportamiento, y discutiendo la importancia de seleccionar el modelo adecuado para las necesidades de uso específicas.
-
+---
 
 
 El procesamiento del lenguaje natural (NLP) ha experimentado avances significativos en la última década. Un pionero en esta esfera es OpenAI, con su modelo de ChatGPT. Aquí, nos centramos en un aspecto específico: el manejo de restricciones, comparando dos versiones de este modelo: la 3.5 y la 4.
