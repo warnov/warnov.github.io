@@ -1,5 +1,5 @@
 ---
-title: Manejo de Restricciones: Una Comparación entre ChatGPT 3.5 y GPT-4
+title: Manejo de Restricciones - Una Comparación entre ChatGPT 3.5 y GPT-4
 date: 2023-08-04 00:56:00 -0500
 categories: [OpenAI]
 tags: [OpenAI, ChatGPT, Prompt Engineering]     # TAG names should always be lowercase
