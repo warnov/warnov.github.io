@@ -5,7 +5,7 @@ categories: [OpenAI]
 tags: [OpenAI, ChatGPT, Prompt Engineering]     # TAG names should always be lowercase
 image:
   path: /assets/img/posts/2023-08-04-Manejo-Restricciones-ChatGPT-35-4-wHeader.png
-  alt: ChatGPT 4 vs CgatGPT 3.5
+  alt: ChatGPT 4 vs ChatGPT 3.5
 ---
 
 En la era del procesamiento del lenguaje natural (NLP), cada versión de un modelo puede tener sus fortalezas únicas. Este post compara el manejo de restricciones entre las versiones 3.5 y 4 de ChatGPT, analizando las diferencias en su comportamiento, y discutiendo la importancia de seleccionar el modelo adecuado para las necesidades de uso específicas.
