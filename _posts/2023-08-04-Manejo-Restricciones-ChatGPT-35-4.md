@@ -5,7 +5,7 @@ categories: [OpenAI]
 tags: [OpenAI, ChatGPT, Prompt Engineering]     # TAG names should always be lowercase
 image:
   path: /assets/img/posts/2023-08-04-Manejo-Restricciones-ChatGPT-35-4-wHeader.png
-  alt: ChatGPT 4 vs ChatGPT 3.5
+  alt: GPT-4 vs ChatGPT 3.5
 ---
 
 ---
@@ -16,13 +16,11 @@ En la era del procesamiento del lenguaje natural (NLP), cada versión de un mode
 
 El procesamiento del lenguaje natural (NLP) ha experimentado avances significativos en la última década. Un pionero en esta esfera es OpenAI, con su modelo de ChatGPT. Aquí, nos centramos en un aspecto específico: el manejo de restricciones, comparando dos versiones de este modelo: la 3.5 y la 4.
 
-El manejo de restricciones en un diálogo puede ser un reto para los modelos de NLP. En nuestra observación, GPT-4 demuestra un manejo superior de restricciones proporcionadas por el usuario en comparación con su predecesor, GPT-3.5. En GPT-3.5, las restricciones complejas a menudo necesitan ser refrescadas para que sean correctamente aplicadas, mientras que GPT-4 aplica eficientemente estas restricciones incluso si se proporcionaron muchas líneas de texto atrás.
+El manejo de restricciones en un diálogo puede ser un reto para los modelos de NLP. En mi observación, GPT-4 demuestra un manejo superior de restricciones proporcionadas por el usuario en comparación con su predecesor, GPT-3.5. En GPT-3.5, las restricciones complejas a menudo necesitan ser refrescadas para que sean correctamente aplicadas, mientras que GPT-4 aplica eficientemente estas restricciones incluso si se proporcionaron muchas líneas de texto atrás.
 
 Además, una característica que destaca en GPT-3.5 es su tendencia a repetir las restricciones en su respuesta, lo que puede ser molesto en las conversaciones. Sin embargo, GPT-4 mejora significativamente en este aspecto, evitando repeticiones innecesarias y proporcionando una conversación más fluida y natural.
 
 Sin embargo, vale la pena señalar que estas mejoras en GPT-4 vienen con un costo en términos de recursos computacionales. Es por eso que el equilibrio entre el manejo efectivo de restricciones y eficiencia debe considerarse al decidir qué versión utilizar.
-
-Conclusiones:
 
 Nuestra comparación enfocada en el manejo de restricciones entre GPT-3.5 y GPT-4 resalta la importancia de seleccionar el modelo de NLP que mejor se adapte a las necesidades específicas. GPT-4 muestra un manejo superior de restricciones y una mejora en la calidad de la conversación, pero con un aumento en el costo. Por otro lado, GPT-3.5, aunque menos eficaz en el manejo de restricciones complejas, es más rápido y económico.
 
