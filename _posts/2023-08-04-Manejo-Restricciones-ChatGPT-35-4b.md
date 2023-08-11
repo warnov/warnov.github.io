@@ -10,7 +10,7 @@ image:
 
 ---
 >**Abstract:**
-Este artículo enfatiza la importancia de implementar restricciones en la interacción con ChatGPT para prevenir usos que incrementen los costos para las empresas que lo utilizan en sus aplicaciones. También compara las versiones GPT-3.5 y GPT-4, destacando que GPT-4 gestiona las restricciones de manera más eficiente y ofrece una conversación más fluida, aunque a un mayor costo computacional. La elección entre ambas versiones requiere equilibrar costos, eficiencia en manejo de restricciones y calidad de la conversación.
+Este artículo enfatiza la gran importancia de implementar restricciones en la interacción con ChatGPT para prevenir usos que incrementen los costos para las empresas que lo utilizan en sus aplicaciones. También compara las versiones GPT-3.5 y GPT-4, destacando que GPT-4 gestiona las restricciones de manera más eficiente y ofrece una conversación más fluida, aunque a un mayor costo computacional. La elección entre ambas versiones requiere equilibrar costos, eficiencia en manejo de restricciones y calidad de la conversación.
 ---
 
 
