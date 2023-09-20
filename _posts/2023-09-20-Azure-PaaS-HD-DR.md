@@ -1,11 +1,10 @@
 ---
-title: Alta Dispnibilidad y Recuperación de Desastres para servicios PaaS en Azure
+title: Alta Disponibilidad y Recuperación de Desastres para servicios PaaS en Azure
 date: 2023-09-20 10:14:00 -0500
 categories: [Azure, Architecture]
 tags: [azure, architecture, paas, disaster recovery, high availability, front door, app service, sql azure, azure sql database, redis cache, event grid, azure storage]     # TAG names should always be lowercase
 image:
   path: /assets/img/posts/2023-09-20/header.png
-  alt: High Availability image representation. A failed server being transfered to another
 ---
 
 
@@ -35,7 +34,7 @@ Aunque es esencial realizar un análisis detallado para una implementación ópt
   - [Distribución Balanceada de Tráfico](#distribución-balanceada-de-tráfico)
   - [Sincronización y Consistencia de Datos](#sincronización-y-consistencia-de-datos)
 - [Determinación de Estrategia para Servicios Individuales](#determinación-de-estrategia-para-servicios-individuales)
-  - [Estrategia para Azure App Service Plans](#estrategia-para-azure-app-service-plans)
+  - [Estrategia para Azure App Service Plan](#estrategia-para-azure-app-service-plan)
     - [Azure Front Door como Balanceador Global](#azure-front-door-como-balanceador-global)
     - [Distribución Equitativa de Capacidad](#distribución-equitativa-de-capacidad)
     - [Respuesta ante Desastres y Escalabilidad](#respuesta-ante-desastres-y-escalabilidad)
@@ -48,10 +47,18 @@ Aunque es esencial realizar un análisis detallado para una implementación ópt
     - [Replicación Activa-Pasiva](#replicación-activa-pasiva)
     - [Replicación Activa-Activa](#replicación-activa-activa)
     - [Cachés independientes en cada región](#cachés-independientes-en-cada-región)
+  - [Estrategia para Event Grid](#estrategia-para-event-grid)
 - [Conclusiones](#conclusiones)
---------
+  
+  
+
+---
 ## Consideraciones sobre Arquitectura Activa-Activa vs Activa-Pasiva
-Aunque un diseño que es muy frecuente sobre todo porque en principio se considera económico es el Activo-Pasivo donde la región secundaria se encuentra apagada o corriendo con niveles de capacidad muy bajos, es crucial considerar los beneficios y desafíos que ambas estrategias ofrecen y las ventajas que sobre todo servicios tipo PaaS ofrecen para el modelo Activo-Activo.
+
+
+Aunque un diseño que es muy frecuente sobre todo porque en principio se considera económico es el Activo-Pasivo donde la región secundaria se encuentra apagada o corriendo con niveles de capacidad muy bajos, es crucial considerar los beneficios y desafíos que ambas estrategias ofrecen y las ventajas que sobre todo servicios tipo PaaS ofrecen para el modelo Activo-Activo.  
+
+![Active vs Passive](/assets/img/posts/2023-09-20/active-vs-passive.png)
 
 ### Resiliencia Mejorada
 
@@ -75,9 +82,11 @@ La perspectiva de optar por una arquitectura activo-activo, como se describió a
 
 Es importante hacer hincapié en que cada servicio y componente de la solución puede tener sus propias peculiaridades y requerimientos. Aunque una estrategia activo-activo puede ser óptima en una visión global, existen situaciones o componentes específicos donde otra estrategia podría ser más adecuada.
 
-### Estrategia para Azure App Service Plans
+### Estrategia para Azure App Service Plan
 
 Para garantizar la alta disponibilidad y la resiliencia de los App Service Plan en un escenario de multirregión, proponemos la siguiente estrategia.
+
+![App Service Plan](/assets/img/posts/2023-09-20/app-service.png){:width="100"}
 
 #### Azure Front Door como Balanceador Global
 
@@ -97,6 +106,8 @@ Por ejemplo, si tenemos una aplicación que requiere cuatro instancias P2 para s
 
 Azure Storage es fundamental en cualquier solución basada en la nube, ofreciendo un almacenamiento robusto y altamente escalable. Para decidir una estrategia de alta disponibilidad y recuperación de desastres, es esencial entender las diferencias entre la replicación geográfica automática y manual.
 
+![App Service Plan](/assets/img/posts/2023-09-20/storage.png){:width="100"}
+
 #### Replicación Geográfica Automática
 
 La replicación automática se destaca por ser fácil de configurar, con menos esfuerzo de programación. Asegura que la data esté respaldada en una región secundaria, aunque de forma asíncrona. Además, solo se permite la escritura en la región primaria, lo que puede simplificar algunas operaciones y evitar conflictos de concurrencia.
@@ -115,6 +126,8 @@ En resumen, dependiendo de las funcionalidades y necesidades específicas relaci
 
 Una de las características más resaltantes de SQL Azure en la gestión de alta disponibilidad es el uso de los Failover Groups. Estos grupos no solo ofrecen recuperación automática y sincronización de datos entre bases de datos primarias y secundarias, sino que además poseen una función conocida como "Endpoint Redirection".
 
+![App Service Plan](/assets/img/posts/2023-09-20/sql-database.png){:width="100"}
+
 "Endpoint Redirection" es una ventaja intrínseca de los Failover Groups que nos permite tener una dirección única hacia la cual se canalizan las solicitudes de escritura (en la región principal) y otra para las de lectura (en la secundaria). Es decir, a pesar de tener múltiples regiones y puntos de acceso, todas las operaciones que requieran modificar datos se redireccionan a un punto específico. Esta cohesión garantiza la integridad de la información, evitando posibles conflictos y desincronizaciones.
 
 Al combinar esta capacidad con Azure Front Door, podemos potenciar aún más esta característica. Front Door, gracias a sus capacidades avanzadas de gestión de tráfico, puede ser configurado para dirigir todas las solicitudes de escritura a los backend desplegados en la región principal del Failover Group. De esta manera, cada solicitud de escritura que ingresa a través de Front Door es redirigida no solo al App Service (o cualquier otro servicio de cómputo de backend) correcto, sino que este, a su vez, apunta al endpoint designado del Failover Group en la región primaria. Esto crea un flujo de trabajo optimizado y eficiente para todas las operaciones que involucran cambios en los datos.
@@ -124,6 +137,8 @@ Por otro lado, para operaciones que no involucren escritura, como consultas de l
 ### Estrategia para Azure Cosmos DB
 
 Azure Cosmos DB es una oferta única dentro de la gama de soluciones de base de datos proporcionadas por Azure. Es una base de datos diseñada con una naturaleza intrínsecamente distribuida, lo que la hace ideal para adaptarse a escenarios de alta disponibilidad y recuperación de desastres.
+
+![App Service Plan](/assets/img/posts/2023-09-20/cosmos-db.png){:width="100"}
 
 Cosmos DB sobresale especialmente cuando hablamos de la metodología activo-activo que hemos propuesto para esta solución. A diferencia de otras bases de datos, Cosmos DB permite operaciones como la escritura multimaestro, que posibilita la escritura simultánea en múltiples regiones sin enfrentar conflictos. Esto no solo aumenta la disponibilidad y resistencia de la aplicación, sino que también mejora la latencia al permitir que las operaciones de escritura se realicen en la región más cercana al usuario.
 
@@ -136,6 +151,8 @@ Por otro lado, hay niveles de consistencia más bajos, que ofrecen una latencia 
 ### Estrategia para Azure Cache for Redis
 
 La eficiencia y la resiliencia de una solución en la nube están intrínsecamente ligadas a la gestión adecuada de la caché. Al hablar de Azure Cache for Redis, encontramos diversas estrategias de geo replicación, que permiten que su aplicación sea resiliente y esté disponible en distintas regiones geográficas. 
+
+![App Service Plan](/assets/img/posts/2023-09-20/redis.png){:width="100"}
 
 #### Replicación Activa-Pasiva
 
@@ -152,6 +169,19 @@ Por otro lado, está la modalidad Activa-Activa, que es parte del nivel Enterpri
 Un punto crucial para considerar es el tipo de contenido que planea cachear. Si se trata de contenido principalmente estático o que cambia esporádicamente, quizás no necesite invertir en geo replicación. Esto, dado que los datos estáticos ofrecen una predictibilidad; sabe exactamente cuándo necesitará realizar cambios y puede planificar estas actualizaciones para momentos que causen la menor interrupción. Además, al evitar la replicación automática para datos que raramente cambian, reduce costos innecesarios y simplifica la infraestructura al no tener que lidiar con posibles conflictos de replicación.
 
 En casos como estos, podemos adicionar este hecho con la arquitectura activa-activa que hemos estado discutiendo para el backend, ya que hay beneficios evidentes en gestionar el caché de forma independiente y permanente en cada región. Una de las grandes ventajas es la latencia reducida. Al permitir que cada backend interactúe con su caché local, las operaciones son notablemente más rápidas, especialmente beneficioso para cargas de trabajo con muchas lecturas. Además, esta independencia garantiza que un fallo en un caché de una región no se propague, aislando así los posibles problemas. Cada caché puede ser personalizado para satisfacer las necesidades específicas de su región, ofreciendo una optimización de costos y eliminando el retraso introducido por la replicación. Ésta es una solución muy similar a la propuesta con la replicación geográfica manual del storage con una facilidad mayor dada por que la información en caché puede ser reconstruida dada su naturaleza efímera.
+
+### Estrategia para Event Grid
+Una de las características más prominentes de Azure Event Grid es su capacidad de geo replicación automática. Pero es crucial comprender que esta geo replicación se centra en replicar únicamente la definición del servicio y no la data (eventos) en sí.  
+
+![App Service Plan](/assets/img/posts/2023-09-20/event-grid.png){:width="100"}
+
+Cuando se presenta un problema en una región y esta deja de estar operativa, los nuevos eventos son redirigidos y procesados por la nueva región que ha tomado el control gracias a la geo replicación de la definición del servicio. Sin embargo, es vital tener en cuenta que los eventos que ya estaban en la región original antes del problema permanecerán allí, en estado de bloqueo, hasta que la región original se restablezca. Una vez que la región original vuelve a estar operativa, esos eventos son finalmente despachados.  
+
+Un punto de atención es el tiempo de vida (TTL) de estos eventos. Si la interrupción en la región original se extiende más allá del TTL de los eventos, existe un riesgo real de que esos eventos se 
+pierdan. Para mitigar este riesgo, es posible configurar la cola de "dead-letter", que actúa como un respaldo para esos eventos que no se pudieron procesar a tiempo.  
+
+Si quisiésemos tener un control más granular sobre la alta disponibilidad y recuperación de desastres, se recomienda implementar una estrategia manual de autorecuperación. Aunque esta estrategia ofrece un mayor control, también requiere de programación adicional del lado del cliente. Por ejemplo, para determinar en qué región operará el Event Grid secundario, será necesario programar la lógica de failover entre dos instancias interregionales de Event Grid. No obstante, es esencial entender que, a pesar de esta intervención manual, aún persiste el desafío de manejar eventos ya enviados y aún no procesados.
+
 
 ## Conclusiones
 
