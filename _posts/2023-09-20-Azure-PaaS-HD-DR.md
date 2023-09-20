@@ -5,7 +5,7 @@ categories: [Azure, Architecture]
 tags: [azure, architecture, paas, disaster recovery, high availability, front door, app service, sql azure, azure sql database, redis cache, event grid, azure storage]     # TAG names should always be lowercase
 image:
   path: /assets/img/posts/2023-09-20/header.png
-  alt: High Availability image representation: A failed server being transfered to another
+  alt: High Availability image representation. A failed server being transfered to another
 ---
 
 
