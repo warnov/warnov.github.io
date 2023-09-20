@@ -10,7 +10,7 @@ image:
 
 
 >**Abstract:**
-En el mundo digital de hoy, la continuidad y recuperación de operaciones es vital para negocios en línea, ya que fallos pueden llevar a grandes pérdidas económicas y daño reputacional. A pesar de que Azure es una plataforma líder en la nube, no garantiza por sí sola total disponibilidad o recuperación de datos. Este artículo se centra en estrategias de alta disponibilidad para servicios PaaS en Azure, sugiriendo una estrategia activo-activo y ofreciendo recomendaciones por tipo de servicio. La meta es ayudar a las empresas a fortalecer su arquitectura en Azure y garantizar operaciones sin interrupciones, optimizando la inversión en la nube.
+>En el mundo digital de hoy, la continuidad y recuperación de operaciones es vital para negocios en línea, ya que fallos pueden llevar a grandes pérdidas económicas y daño reputacional. A pesar de que Azure es una plataforma líder en la nube, no garantiza por sí sola total disponibilidad o recuperación de datos. Este artículo se centra en estrategias de alta disponibilidad para servicios PaaS en Azure, sugiriendo una estrategia activo-activo y ofreciendo recomendaciones por tipo de servicio. La meta es ayudar a las empresas a fortalecer su arquitectura en Azure y garantizar operaciones sin interrupciones, optimizando la inversión en la nube.
 
 
 ## Introducción
@@ -25,9 +25,32 @@ Y en cuando a datos, mientras algunos necesitan ser accesibles y modificables en
 
 Aunque es esencial realizar un análisis detallado para una implementación óptima, a continuación, proporcionaremos un conjunto de recomendaciones genéricas que sirven como punto de partida o guía general para HA y DR aprovechando las ventajas de los servicios PaaS en la nube.
 
-
+-----------------
+## Contenido
+- [Introducción](#introducción)
+- [Contenido](#contenido)
+- [Consideraciones sobre Arquitectura Activa-Activa vs Activa-Pasiva](#consideraciones-sobre-arquitectura-activa-activa-vs-activa-pasiva)
+  - [Resiliencia Mejorada](#resiliencia-mejorada)
+  - [Consistencia de Performance](#consistencia-de-performance)
+  - [Distribución Balanceada de Tráfico](#distribución-balanceada-de-tráfico)
+  - [Sincronización y Consistencia de Datos](#sincronización-y-consistencia-de-datos)
+- [Determinación de Estrategia para Servicios Individuales](#determinación-de-estrategia-para-servicios-individuales)
+  - [Estrategia para Azure App Service Plans](#estrategia-para-azure-app-service-plans)
+    - [Azure Front Door como Balanceador Global](#azure-front-door-como-balanceador-global)
+    - [Distribución Equitativa de Capacidad](#distribución-equitativa-de-capacidad)
+    - [Respuesta ante Desastres y Escalabilidad](#respuesta-ante-desastres-y-escalabilidad)
+  - [Estrategia para Azure Storage](#estrategia-para-azure-storage)
+    - [Replicación Geográfica Automática](#replicación-geográfica-automática)
+    - [Replicación Geográfica Manual](#replicación-geográfica-manual)
+  - [Estrategia para SQL Azure](#estrategia-para-sql-azure)
+  - [Estrategia para Azure Cosmos DB](#estrategia-para-azure-cosmos-db)
+  - [Estrategia para Azure Cache for Redis](#estrategia-para-azure-cache-for-redis)
+    - [Replicación Activa-Pasiva](#replicación-activa-pasiva)
+    - [Replicación Activa-Activa](#replicación-activa-activa)
+    - [Cachés independientes en cada región](#cachés-independientes-en-cada-región)
+- [Conclusiones](#conclusiones)
+--------
 ## Consideraciones sobre Arquitectura Activa-Activa vs Activa-Pasiva
-
 Aunque un diseño que es muy frecuente sobre todo porque en principio se considera económico es el Activo-Pasivo donde la región secundaria se encuentra apagada o corriendo con niveles de capacidad muy bajos, es crucial considerar los beneficios y desafíos que ambas estrategias ofrecen y las ventajas que sobre todo servicios tipo PaaS ofrecen para el modelo Activo-Activo.
 
 ### Resiliencia Mejorada
