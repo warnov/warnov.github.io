@@ -102,9 +102,11 @@ En la eventualidad de un desastre que haga que una de las regiones quede inactiv
 
 Por ejemplo, si tenemos una aplicación que requiere cuatro instancias P2 para soportar toda la carga de la solución, y hemos puesto tres instancias P2 en la región principal y una en la secundaria, si llegase a haber un failover, lo que haríamos sencillamente sería agregar tres instancias más de P2 en la secundaria, para satisfacer el requerimiento de las cuatro P2 necesarias para soportar toda la carga: de hecho, dado que un failover es un proceso complejo que puede sobrecargar un poco la infraestructura al principio (entre otras cosas dado que una gran carga de sesiones que estaban en la otra región ahora deberá ser atendida por la nueva), podríamos mejor desplegar en total cinco instancias P2 en la secundaria, mientras se estabiliza el failover y luego volver a bajar a cuatro. Como se mencionó antes, estas operaciones son muy sencillas y no afectan la disponibilidad del servicio. (Las cantidades usadas son solo ejemplo que deben ser validados con las pruebas de carga pertinentes y son solo usadas para ilustrar el concepto).
 
-A cotinuación un diagrama que nos muestra un ejemplo de la resdistribución de capacidad de cómputo en dos regiones orquestadas por Front Door:
+A cotinuación un diagrama que nos muestra un ejemplo de la resdistribución de capacidad de cómputo en dos regiones orquestadas por Front Door. 
 
 ![App Service Plan Active - Active Architecture](/assets/img/posts/2023-09-20/app-service-model.png){:width="800"}
+
+Tengamos en cuenta que aunque los App Service Plan se llaman diferente, las aplicaciones que contienen son las mismas. Solo que de acuerdo a la ruta pedida, Front Door se encarga de hacer el request a uno u otro App Service Plan. De esta manera, cada App Service Plan terminará ejecutando tareas distintas. El principal hará tareas sobre todo de escritura en la base de datos mientras el secundario se encargará de tareas de solo lectura. Esto podría implicar por ejemplo que en un determinado momento requiramos más instancias en la región primaria que en la secundaria. Pero recordemos que siempre sería más conveniente para tener ambientes más predictivos tener las instancias del mismo tamaño. Así que como recomendación está solo variar la cantidad (Scale Out) en vez del tamaño (Scale Up) para los App Service Plan en este caso.
 
 ### Estrategia para Azure Storage
 
