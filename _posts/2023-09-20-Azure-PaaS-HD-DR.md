@@ -102,11 +102,15 @@ En la eventualidad de un desastre que haga que una de las regiones quede inactiv
 
 Por ejemplo, si tenemos una aplicación que requiere cuatro instancias P2 para soportar toda la carga de la solución, y hemos puesto tres instancias P2 en la región principal y una en la secundaria, si llegase a haber un failover, lo que haríamos sencillamente sería agregar tres instancias más de P2 en la secundaria, para satisfacer el requerimiento de las cuatro P2 necesarias para soportar toda la carga: de hecho, dado que un failover es un proceso complejo que puede sobrecargar un poco la infraestructura al principio (entre otras cosas dado que una gran carga de sesiones que estaban en la otra región ahora deberá ser atendida por la nueva), podríamos mejor desplegar en total cinco instancias P2 en la secundaria, mientras se estabiliza el failover y luego volver a bajar a cuatro. Como se mencionó antes, estas operaciones son muy sencillas y no afectan la disponibilidad del servicio. (Las cantidades usadas son solo ejemplo que deben ser validados con las pruebas de carga pertinentes y son solo usadas para ilustrar el concepto).
 
+A cotinuación un diagrama que nos muestra un ejemplo de la resdistribución de capacidad de cómputo en dos regiones orquestadas por Front Door:
+
+![App Service Plan Active - Active Architecture](/assets/img/posts/2023-09-20/app-service-model.png){:width="800"}
+
 ### Estrategia para Azure Storage
 
 Azure Storage es fundamental en cualquier solución basada en la nube, ofreciendo un almacenamiento robusto y altamente escalable. Para decidir una estrategia de alta disponibilidad y recuperación de desastres, es esencial entender las diferencias entre la replicación geográfica automática y manual.
 
-![App Service Plan](/assets/img/posts/2023-09-20/storage.png){:width="100"}
+![Azure Storage](/assets/img/posts/2023-09-20/storage.png){:width="100"}
 
 #### Replicación Geográfica Automática
 
@@ -126,7 +130,7 @@ En resumen, dependiendo de las funcionalidades y necesidades específicas relaci
 
 Una de las características más resaltantes de SQL Azure en la gestión de alta disponibilidad es el uso de los Failover Groups. Estos grupos no solo ofrecen recuperación automática y sincronización de datos entre bases de datos primarias y secundarias, sino que además poseen una función conocida como "Endpoint Redirection".
 
-![App Service Plan](/assets/img/posts/2023-09-20/sql-database.png){:width="100"}
+![SQL Database](/assets/img/posts/2023-09-20/sql-database.png){:width="100"}
 
 "Endpoint Redirection" es una ventaja intrínseca de los Failover Groups que nos permite tener una dirección única hacia la cual se canalizan las solicitudes de escritura (en la región principal) y otra para las de lectura (en la secundaria). Es decir, a pesar de tener múltiples regiones y puntos de acceso, todas las operaciones que requieran modificar datos se redireccionan a un punto específico. Esta cohesión garantiza la integridad de la información, evitando posibles conflictos y desincronizaciones.
 
@@ -134,11 +138,23 @@ Al combinar esta capacidad con Azure Front Door, podemos potenciar aún más est
 
 Por otro lado, para operaciones que no involucren escritura, como consultas de lectura, Azure Front Door puede gestionar un balanceo ponderado. Esto significa que una porción menor de estas solicitudes puede ser dirigida a la región principal, mientras que una proporción mayor se envía a la región secundaria. Este enfoque no solo distribuye la carga y minimiza la latencia, sino que también aprovecha la infraestructura disponible en ambas regiones, maximizando la eficiencia y la disponibilidad.
 
+Teniendo en cuenta lo anterior, junto con la arquitectura Activo - Activo de App Service, podríamos concretar un modelo conjunto con SQL Azure Database:
+
+![App Service Plan + Azure SQL Database en Activo - Activo](/assets/img/posts/2023-09-20/app-service-sql-model.png){:width="800"}
+
+Aquí se mantienen los costos de cómputo idénticos, pero a SQL Database sí hay que crearle una réplica que básicamente duplica sus costos. Pero, en caso de un desastre, el sistema respondería con unos niveles de RTO y RPO muy superiores a los obtenibles en una estrategia pasiva. Observemos en especial como la característica de *Endpoint Redirection* se encarga de redireccionar automáticamente el tráfico al nodo réplica una vez queda listo después del failover.
+
+![App Service Plan + Azure SQL Database en Activo - Activo](/assets/img/posts/2023-09-20/sql-failover-model.png){:width="800"}
+
+Luego de esto, para el failback, va a pasar algún tiempo mientras la replicación desde la réplica al nodo principal fluye para sincronizar la data que se trabajó durante la falla. Mientras tanto el App Service seguirá trabajando con el nodo secundario. Cuando el failback de Azure SQL Database se completa, entonces *Endpoint Redirection* reconfigura el tráfico a su estad original:
+
+![App Service Plan + Azure SQL Database en Activo - Activo](/assets/img/posts/2023-09-20/app-service-failback.png){:width="800"}
+
 ### Estrategia para Azure Cosmos DB
 
 Azure Cosmos DB es una oferta única dentro de la gama de soluciones de base de datos proporcionadas por Azure. Es una base de datos diseñada con una naturaleza intrínsecamente distribuida, lo que la hace ideal para adaptarse a escenarios de alta disponibilidad y recuperación de desastres.
 
-![App Service Plan](/assets/img/posts/2023-09-20/cosmos-db.png){:width="100"}
+![Cosmos DB](/assets/img/posts/2023-09-20/cosmos-db.png){:width="100"}
 
 Cosmos DB sobresale especialmente cuando hablamos de la metodología activo-activo que hemos propuesto para esta solución. A diferencia de otras bases de datos, Cosmos DB permite operaciones como la escritura multimaestro, que posibilita la escritura simultánea en múltiples regiones sin enfrentar conflictos. Esto no solo aumenta la disponibilidad y resistencia de la aplicación, sino que también mejora la latencia al permitir que las operaciones de escritura se realicen en la región más cercana al usuario.
 
@@ -152,7 +168,7 @@ Por otro lado, hay niveles de consistencia más bajos, que ofrecen una latencia 
 
 La eficiencia y la resiliencia de una solución en la nube están intrínsecamente ligadas a la gestión adecuada de la caché. Al hablar de Azure Cache for Redis, encontramos diversas estrategias de geo replicación, que permiten que su aplicación sea resiliente y esté disponible en distintas regiones geográficas. 
 
-![App Service Plan](/assets/img/posts/2023-09-20/redis.png){:width="100"}
+![Redis Cache](/assets/img/posts/2023-09-20/redis.png){:width="100"}
 
 #### Replicación Activa-Pasiva
 
@@ -173,7 +189,7 @@ En casos como estos, podemos adicionar este hecho con la arquitectura activa-act
 ### Estrategia para Event Grid
 Una de las características más prominentes de Azure Event Grid es su capacidad de geo replicación automática. Pero es crucial comprender que esta geo replicación se centra en replicar únicamente la definición del servicio y no la data (eventos) en sí.  
 
-![App Service Plan](/assets/img/posts/2023-09-20/event-grid.png){:width="100"}
+![Event Grid](/assets/img/posts/2023-09-20/event-grid.png){:width="100"}
 
 Cuando se presenta un problema en una región y esta deja de estar operativa, los nuevos eventos son redirigidos y procesados por la nueva región que ha tomado el control gracias a la geo replicación de la definición del servicio. Sin embargo, es vital tener en cuenta que los eventos que ya estaban en la región original antes del problema permanecerán allí, en estado de bloqueo, hasta que la región original se restablezca. Una vez que la región original vuelve a estar operativa, esos eventos son finalmente despachados.  
 
