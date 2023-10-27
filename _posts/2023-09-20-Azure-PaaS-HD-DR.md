@@ -38,10 +38,10 @@ Aunque es esencial realizar un análisis detallado para una implementación ópt
     - [Azure Front Door como Balanceador Global](#azure-front-door-como-balanceador-global)
     - [Distribución Equitativa de Capacidad](#distribución-equitativa-de-capacidad)
     - [Respuesta ante Desastres y Escalabilidad](#respuesta-ante-desastres-y-escalabilidad)
+  - [Estrategia para Azure SQL Database](#estrategia-para-azure-sql-database)
   - [Estrategia para Azure Storage](#estrategia-para-azure-storage)
     - [Replicación Geográfica Automática](#replicación-geográfica-automática)
     - [Replicación Geográfica Manual](#replicación-geográfica-manual)
-  - [Estrategia para Azure SQL Database](#estrategia-para-azure-sql-database)
   - [Estrategia para Azure Cosmos DB](#estrategia-para-azure-cosmos-db)
   - [Estrategia para Azure Cache for Redis](#estrategia-para-azure-cache-for-redis)
     - [Replicación Activa-Pasiva](#replicación-activa-pasiva)
@@ -108,26 +108,6 @@ A cotinuación un diagrama que nos muestra un ejemplo de la resdistribución de 
 
 Tengamos en cuenta que aunque los App Service Plan se llaman diferente, las aplicaciones que contienen son las mismas. Solo que de acuerdo a la ruta pedida, Front Door se encarga de hacer el request a uno u otro App Service Plan. De esta manera, cada App Service Plan terminará ejecutando tareas distintas. El principal hará tareas sobre todo de escritura en la base de datos mientras el secundario se encargará de tareas de solo lectura. Esto podría implicar por ejemplo que en un determinado momento requiramos más instancias en la región primaria que en la secundaria. Pero recordemos que siempre sería más conveniente para tener ambientes más predictivos tener las instancias del mismo tamaño. Así que como recomendación está solo variar la cantidad (Scale Out) en vez del tamaño (Scale Up) para los App Service Plan en este caso.
 
-### Estrategia para Azure Storage
-
-Azure Storage es fundamental en cualquier solución basada en la nube, ofreciendo un almacenamiento robusto y altamente escalable. Para decidir una estrategia de alta disponibilidad y recuperación de desastres, es esencial entender las diferencias entre la replicación geográfica automática y manual.
-
-![Azure Storage](/assets/img/posts/2023-09-20/storage.png){:width="100"}
-
-#### Replicación Geográfica Automática
-
-La replicación automática se destaca por ser fácil de configurar, con menos esfuerzo de programación. Asegura que la data esté respaldada en una región secundaria, aunque de forma asíncrona. Además, solo se permite la escritura en la región primaria, lo que puede simplificar algunas operaciones y evitar conflictos de concurrencia.
-
-Sin embargo, esta simplicidad viene con sus desafíos. La asincronía puede resultar en la pérdida de datos recientes en caso de un failover. Además, durante eventos de failover y failback, la cuenta de almacenamiento no está disponible para escrituras, lo que puede causar interrupciones en las operaciones de la aplicación. Este proceso también requiere copiar toda la data desde la región secundaria de nuevo a la primaria, y viceversa, después de la recuperación. Así, la aplicación necesita ser capaz de operar en modo solo lectura durante estos tiempos. Las lecturas en la región secundaria también pueden estar desactualizadas debido al lag en la replicación.
-
-#### Replicación Geográfica Manual
-
-El método manual brinda un control más directo y una mayor consistencia de datos, permitiendo escrituras en cualquier región siempre que las condiciones de concurrencia estén adecuadamente manejadas. Las interrupciones por indisponibilidad de escritura son mínimas, y siempre se puede acceder a datos actualizados desde cualquier región. Además, no es necesario copiar toda la data durante el failback, lo que ahorra tiempo y recursos. 
-
-Por otro lado, el control adicional viene con una complejidad añadida. Requiere un mecanismo personalizado para replicar y detectar cambios, lo que implica un mayor esfuerzo de desarrollo. También puede haber una latencia adicional en las operaciones mientras se confirman los cambios en ambas cuentas de almacenamiento.
-
-En resumen, dependiendo de las funcionalidades y necesidades específicas relacionadas con el almacenamiento, se puede optar por una estrategia u otra.
-
 ### Estrategia para Azure SQL Database
 
 Una de las características más resaltantes de SQL Azure en la gestión de alta disponibilidad es el uso de los Failover Groups. Estos grupos no solo ofrecen recuperación automática y sincronización de datos entre bases de datos primarias y secundarias, sino que además poseen una función conocida como "Endpoint Redirection".
@@ -151,6 +131,26 @@ Aquí se mantienen los costos de cómputo idénticos, pero a SQL Database sí ha
 Luego de esto, para el failback, va a pasar algún tiempo mientras la replicación desde la réplica al nodo principal fluye para sincronizar la data que se trabajó durante la falla. Mientras tanto el App Service seguirá trabajando con el nodo secundario. Cuando el failback de Azure SQL Database se completa, entonces *Endpoint Redirection* reconfigura el tráfico a su estad original:
 
 ![App Service Plan + Azure SQL Database en Activo - Activo](/assets/img/posts/2023-09-20/app-service-failback.png){:width="800"}
+
+### Estrategia para Azure Storage
+
+Azure Storage es fundamental en cualquier solución basada en la nube, ofreciendo un almacenamiento robusto y altamente escalable. Para decidir una estrategia de alta disponibilidad y recuperación de desastres, es esencial entender las diferencias entre la replicación geográfica automática y manual.
+
+![Azure Storage](/assets/img/posts/2023-09-20/storage.png){:width="100"}
+
+#### Replicación Geográfica Automática
+
+La replicación automática se destaca por ser fácil de configurar, con menos esfuerzo de programación. Asegura que la data esté respaldada en una región secundaria, aunque de forma asíncrona. Además, solo se permite la escritura en la región primaria, lo que puede simplificar algunas operaciones y evitar conflictos de concurrencia.
+
+Sin embargo, esta simplicidad viene con sus desafíos. La asincronía puede resultar en la pérdida de datos recientes en caso de un failover. Además, durante eventos de failover y failback, la cuenta de almacenamiento no está disponible para escrituras, lo que puede causar interrupciones en las operaciones de la aplicación. Este proceso también requiere copiar toda la data desde la región secundaria de nuevo a la primaria, y viceversa, después de la recuperación. Así, la aplicación necesita ser capaz de operar en modo solo lectura durante estos tiempos. Las lecturas en la región secundaria también pueden estar desactualizadas debido al lag en la replicación.
+
+#### Replicación Geográfica Manual
+
+El método manual brinda un control más directo y una mayor consistencia de datos, permitiendo escrituras en cualquier región siempre que las condiciones de concurrencia estén adecuadamente manejadas. Las interrupciones por indisponibilidad de escritura son mínimas, y siempre se puede acceder a datos actualizados desde cualquier región. Además, no es necesario copiar toda la data durante el failback, lo que ahorra tiempo y recursos. 
+
+Por otro lado, el control adicional viene con una complejidad añadida. Requiere un mecanismo personalizado para replicar y detectar cambios, lo que implica un mayor esfuerzo de desarrollo. También puede haber una latencia adicional en las operaciones mientras se confirman los cambios en ambas cuentas de almacenamiento.
+
+En resumen, dependiendo de las funcionalidades y necesidades específicas relacionadas con el almacenamiento, se puede optar por una estrategia u otra.
 
 ### Estrategia para Azure Cosmos DB
 
