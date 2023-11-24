@@ -7,7 +7,7 @@ image:
   path: /assets/img/posts/2023-11-22-Azure-Tables-Backup.webp
 ---
 
-## Abstract
+## Abstract:
 In the dynamic world of cloud services, where data security and backup are of utmost importance, Azure Tables in the Microsoft Azure cloud platform presents a unique challenge. This technical post delves into the practical and efficient backup strategies for Azure Tables, highlighting various tools and methods to safeguard your data.
 
 ## Azure Tables backup strategies
