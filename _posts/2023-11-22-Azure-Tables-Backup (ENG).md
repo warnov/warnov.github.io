@@ -1,7 +1,7 @@
 ---
 title: Effective Backup Strategies for Azure Tables
 date: 2023-11-22 18:22:00 -0500
-categories: [Azure, Architecture]
+categories: [Azure, Storage]
 tags: [azure, architecture, paas, disaster recovery, high availability, backup, azure tables, azure storage]     # TAG names should always be lowercase
 image:
   path: /assets/img/posts/2023-11-22-Azure-Tables-Backup.webp

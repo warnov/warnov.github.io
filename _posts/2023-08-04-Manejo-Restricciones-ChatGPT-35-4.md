@@ -1,8 +1,8 @@
 ---
 title: Manejo de Restricciones - Una Comparación entre ChatGPT 3.5 y GPT-4
 date: 2023-08-04 00:56:00 -0500
-categories: [OpenAI]
-tags: [OpenAI, ChatGPT, Prompt Engineering]     # TAG names should always be lowercase
+categories: [ChatGPT, Prompt Engineering]
+tags: [openai, chatgpt, prompt engineering]     # TAG names should always be lowercase
 image:
   path: /assets/img/posts/2023-08-04/Header.png
   alt: GPT-4 vs ChatGPT 3.5

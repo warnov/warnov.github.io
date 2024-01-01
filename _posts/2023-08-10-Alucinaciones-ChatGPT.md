@@ -1,8 +1,8 @@
 ---
 title: Entendiendo (y evitando) Alucinaciones en ChatGPT
 date: 2023-08-10 23:34:00 -0500
-categories: [OpenAI]
-tags: [OpenAI, ChatGPT, Prompt Engineering]     # TAG names should always be lowercase
+categories: [ChatGPT, Prompt Engineering]
+tags: [openai, chatgpt, prompt engineering, hallucinations]     # TAG names should always be lowercase
 image:
   path: /assets/img/posts/2023-08-10/psychodelic-hallucination-in-picasso-guernica-style-gray-scale.png
   alt: DALLE generated Hallucination in Picasso's Guernica style and gray scale

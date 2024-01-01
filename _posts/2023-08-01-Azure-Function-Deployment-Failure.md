@@ -1,8 +1,8 @@
 ---
 title: Error inexplicable en el despliegue de una Azure Function
 date: 2023-08-01 01:24:00 -0500
-categories: [Azure, Functions, Deployment, error]
-tags: [azure, azure functions, deployment, error, visual studio]     # TAG names should always be lowercase
+categories: [Azure, Serverless]
+tags: [azure, azure functions, deployment, error, visual studio, troubleshooting]     # TAG names should always be lowercase
 image:
   path: /assets/img/posts/2023-08-01-Azure-Function-Deployment-Failure-Header.png
   alt: Azure Function deployment from Visual Studio error dialog box

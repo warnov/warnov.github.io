@@ -1,7 +1,7 @@
 ---
 title: Hello ChatGPT
 date: 2023-12-07 02:46:00 -0500
-categories: [AI, ChatGPT, Azure, Development]
+categories: [ChatGPT, Development]
 tags: [azure, development, chatgpt, openai, python, vscode, tutorial, video]
 image:
   path: /assets/img/posts/2023-12-07-Hello-ChatGPT.png
