@@ -5,10 +5,12 @@ categories:
    - ChatGPT
    - Whisper
    - CosmosDB
-tags: [azure, development, chatgpt, openai, python, vscode, cosmosdb, whisper, speech to text, azure functions]
+tags: [azure, desenvolvimento, chatgpt, openai, python, vscode, cosmosdb, whisper, speech to text, azure functions]
 image:
-  path: /assets/img/posts/2024-04-22/header.png
+   path: /assets/img/posts/2024-04-22/header.png
 ---
+
+> Veja este artigo em: [Español](https://warnov.com/@whisper-gpt-post-es), [English](https://warnov.com/@whisper-gpt-post), [Português](https://warnov.com/@whisper-gpt-post-pt)
 
 A capacidade de extrair informações de forma rápida e precisa de conversas gravadas é um ativo poderoso para empresas de vários setores. Utilizar tecnologias de ponta como os modelos Whisper e GPT-4 da Azure OpenAI pode transformar áudio bruto em insights acionáveis. Este post do blog irá guiá-lo através de um cenário prático de processamento de conversas gravadas usando os serviços Azure OpenAI para extrair informações valiosas que serão armazenadas no CosmosDB, delineando como adaptar esse processo para a estratégia de micro serviços usando um exemplo, funções acionadas por armazenamento Azure Blob.
 

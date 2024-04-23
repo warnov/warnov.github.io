@@ -10,6 +10,8 @@ image:
   path: /assets/img/posts/2024-04-22/header.png
 ---
 
+>Lee este artículo en: [Español](https://warnov.com/@whisper-gpt-post-es), [English](https://warnov.com/@whisper-gpt-post), [Português](https://warnov.com/@whisper-gpt-post-pt)
+
 La capacidad de extraer información de manera rápida y precisa de las conversaciones grabadas es un activo poderoso para las empresas de diversos sectores. Aprovechar tecnologías de vanguardia como los modelos Whisper y GPT-4 de Azure OpenAI puede transformar el audio crudo en conocimientos accionables. Este blog te guiará a través de un escenario práctico de procesamiento de conversaciones grabadas utilizando los servicios de Azure OpenAI para extraer información valiosa que luego será almacenada en CosmosDB, mientras describe cómo adaptar este proceso a la estrategia de microservicios utilizando un ejemplo, funciones desencadenadas por Azure Blob Storage.
 
 ## Descripción del Escenario
