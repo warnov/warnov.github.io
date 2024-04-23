@@ -1,5 +1,5 @@
 ---
-title: Whisper + GPT. Extracting Structured Information from Recorded Conversations with Python Azure Functions, and then store them in CosmosDB
+title: Whisper + GPT. Extracting Structured Information from Recorded Conversations with Python Azure Functions, and storing results in CosmosDB
 date:  2024-04-22 23:29:00 -0500
 categories: 
    - ChatGPT
