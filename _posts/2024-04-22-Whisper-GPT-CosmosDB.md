@@ -22,6 +22,10 @@ Imagine a sales team that conducts numerous phone interviews with potential buye
 
 > **Note:** This scenario is implemented in the [Github repo](https://warnov.com/@whisper-gpt) that supports this blog post.
 
+This is a high level view of the flow:
+
+![High level view of the flow](/assets/img/posts/2024-04-22/highLevelFlow.png)
+
 1. **Recording Calls**:
    - Sales representatives conduct interviews with potential buyers. These calls are recorded with the consent of all participants and stored as audio files in Azure Blob Storage.
 
@@ -37,9 +41,15 @@ Imagine a sales team that conducts numerous phone interviews with potential buye
 5. **Extracting Structured Data**:
    - Once transcribed, the text is fed into the GPT-4 model. Using a pre-defined prompt, GPT-4 analyzes the transcription to extract structured information, such as the customer's name, geographical location, and products of interest.
 
-6. **Storing the Results**:
+6. **Receiving and enrichening the structured data**
+   - The function will add metadata to the extracted JSON to have a more useful document.
+  
+7. **Storing the Results**:
    - The extracted information, along with the transcription, is bundled into an `AnalysisResult` object. This object includes all pertinent details and metadata about the call, such as the date and time.
    - This structured data is then stored in Azure CosmosDB. Each entry is indexed by the call date and includes identifiers to help the sales team retrieve and analyze the data efficiently.
+  
+8. **Further Processing**
+   - Do whatever additional processing now that we have the data structured in our CosmosDB.
 
 ### Architecture
 This is the architecture proposed for the solution:  
