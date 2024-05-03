@@ -222,3 +222,45 @@ After making some corrections, the function still not working so here are the ne
   The `AppSetting `reference to `KV `works easier than expected. Just operating like described above, allows us to connect the `Fx `to the storage account with the connection string referenced in the KV so no one can seen that connection string. Also, it was discovered that ***<u>you can see the logs of the functions</u>*** without `app insights`, going into the *Code+Test* functionality in the *Developer* section of the particular function inside the *function app* in the *Azure Portal*. There you can connect to the *Filesystem Logs* that are the ones that present the information from the `ILogger`.
   
   
+  
+  
+  
+  ## FxTargetAnalyzer
+  
+  - [x] Create queue triggered function
+  
+  - [x] Use `saintelappopenai ` setting:  and `profile-processing`queue
+  
+  - [x] Publish a simple version and confirm messages from the queue are being processed
+  
+  - [ ] Add real functionality and observe the behavior of multiple calls against OpenAI when processing a load of messages in the queue
+  
+    - [x] Add the new `App Configuration Service` reference (the one with `OpenAi Configuration`). It is just needed to put this code in the current host initialization in `Program.cs:`
+      ```C#
+        // Add a second Azure App Configuration
+        config.AddAzureAppConfiguration(options =>
+        {
+            options.Connect(settings["app-conf-open-ai-cs"])
+                   .ConfigureKeyVault(kv =>
+                   {
+                       kv.SetCredential(new DefaultAzureCredential());
+                   });
+        });
+      ```
+  
+    - [x] Add the connection string to the `KV`
+  
+    - [x] Test the deserializing of the message into `a Target Identification` and the access to the `OpenAi Config` locally
+  
+    - [x] Test this on Azure: Specially the access to the `OpenAI Config`
+      At the beginning it failed and the Function App didn't started. The error was that the published function hadn't the access to the `KeyVault` that is referenced for the `OpenAi App Config Service (vaultcert)`. After giving these permissions the function started and worked great!
+  
+    - [x] Complete the whole functionality and test it. Check the effects of massive parallel calls to `openai`.
+  
+      
+  
+    ### ToDos
+  
+    - [ ] Reduce temperature in hobbies creation
+    - [ ] Correct the genre based on the name when generating personality
+    - [ ] Add birthday to identifier.json
