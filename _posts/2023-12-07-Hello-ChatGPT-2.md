@@ -1,6 +1,6 @@
 ---
-title: Hello ChatGPT 2
-date: 2023-12-07 02:46:00 -0500
+title: Getting Started with LLM Apps Development for Python Enthusiasts
+date: 2024-06-27 01:24:00 -0500
 categories: [ChatGPT, Development]
 tags: [azure, development, chatgpt, openai, python, vscode, tutorial, video]
 image:
