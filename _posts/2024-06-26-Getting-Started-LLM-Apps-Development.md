@@ -6,7 +6,7 @@ categories:
    - Whisper
 tags: [azure, development, chatgpt, openai, python, vscode, cosmosdb, whisper, speech to text, azure functions]
 image:
-  path: /assets/img/posts/2024-04-22/2024-06-26-Getting-Started-LLM-Apps-Development-Header.jpg
+  path: /assets/img/posts/2024-06-26/2024-06-26-Getting-Started-LLM-Apps-Development-Header.jpg
 ---
 
 Welcome to your guide on diving into the world of Large Language Models (LLM) app development! Whether you're a student or a professional with a background in Python, this guide will help you set up your development environment and explore various aspects of creating LLM applications. We'll cover everything from setting up Visual Studio Code to advanced topics like OpenAI function calling and extracting structured information from audio files with Azure OpenAI. Let's get started!
