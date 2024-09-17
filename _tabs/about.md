@@ -2,6 +2,7 @@
 # the default layout is 'page'
 icon: fas fa-info-circle
 order: 4
+title: Walter Novoa - WarNov
 ---
 
 Veinte años de experiencia como Ingeniero de Sistemas, incluyendo trece años como Arquitecto de Soluciones en la Nube especializado en Microsoft Azure, guiando constantemente a clientes y socios sobre cómo aprovechar la Nube para satisfacer sus necesidades específicas. 
