@@ -35,22 +35,24 @@ A personalized command line can greatly improve your productivity. With the righ
      load(io.popen('oh-my-posh init cmd'):read("*a"))()
      ```
    - This command integrates Oh My Posh into CMD and allows you to customize your prompt.
+   - If you want to have a specific theme for your prompt, you could download it or create it and then reference it in the script:
+      ```lua
+      load(io.popen('oh-my-posh init cmd --config your-themes-path/your-theme-name.omp.json'):read("*a"))()
+      ``` 
 
 3. **Download the Oh My Posh Executable**:
    - Download Oh My Posh by running the following command in PowerShell or CMD:
-     ```sh
-     wget https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/posh-windows-amd64.exe -O %USERPROFILE%\oh-my-posh.exe
-     ```
-   - Place the executable somewhere accessible in your PATH.
+      ```sh
+      winget install "Oh My Posh"
+      ```
 
 4. **Restart CMD**: After creating the Lua script and adding the Oh My Posh executable, restart CMD to apply the new prompt.
 
 5. **Install `lsd` for CMD**:
    - Download the `lsd` executable by using:
-     ```sh
-     wget https://github.com/Peltoche/lsd/releases/download/0.23.1/lsd_0.23.1_windows_amd64.zip -O %USERPROFILE%\lsd.zip
-     ```
-   - Extract the files and place them in a directory included in your PATH.
+      ```sh
+      winget install LSDeluxe
+      ```
    - Create a batch file (`ls.bat`) that allows you to use `lsd` in CMD:
      ```cmd
      @echo off
@@ -61,29 +63,14 @@ A personalized command line can greatly improve your productivity. With the righ
 **PowerShell** is already more advanced than CMD, but that doesn’t mean it can’t be improved further.
 
 1. **Install Oh My Posh**:
-   - Run the following command to install Oh My Posh:
-     ```powershell
-     Install-Module oh-my-posh -Scope CurrentUser -AllowPrerelease -Force
-     ```
    - Add Oh My Posh to your PowerShell profile by editing the profile file:
      ```powershell
      notepad $PROFILE
      ```
    - Add the following to the profile:
      ```powershell
-     Import-Module oh-my-posh
-     Set-PoshPrompt -Theme powerlevel10k_classic
-     ```
-
-2. **Install `lsd` for PowerShell**:
-   - Use **scoop** to install `lsd` conveniently:
-     ```powershell
-     iwr -useb get.scoop.sh | iex
-     scoop install lsd
-     ```
-   - Add an alias for `ls` to use `lsd` instead:
-     ```powershell
-     Set-Alias ls lsd
+        oh-my-posh --config C:/path/to/oh-my-posh-themes/theme-name.json init pwsh | Invoke-Expression
+        Set-Alias ls lsd
      ```
 
 ## Setting Up WSL Bash
@@ -92,8 +79,7 @@ A personalized command line can greatly improve your productivity. With the righ
 1. **Install Oh My Posh** for Bash:
    - Download Oh My Posh:
      ```sh
-     wget https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/posh-linux-amd64 -O ~/.local/bin/oh-my-posh
-     chmod +x ~/.local/bin/oh-my-posh
+      curl -s https://ohmyposh.dev/install.sh | bash -s
      ```
    - Edit `.bashrc` to add Oh My Posh:
      ```sh
@@ -101,37 +87,39 @@ A personalized command line can greatly improve your productivity. With the righ
      ```
      Add the following:
      ```sh
-     eval "$(oh-my-posh init bash --config ~/.poshthemes/powerlevel10k_classic.omp.json)"
+     eval "$(oh-my-posh init bash --config /mnt/C/path/to/oh-my-posh-themes/theme-name.json)"
      ```
+     Observe how we took advantage of the file sharing between the Windows File System and the WSL
 
 2. **Install `lsd` for WSL**:
-   - Download the `.deb` package for `lsd`:
+   - Install `cargo` first:
      ```sh
-     wget https://github.com/Peltoche/lsd/releases/download/0.23.1/lsd_0.23.1_amd64.deb
-     ar x lsd_0.23.1_amd64.deb
-     tar -xvf data.tar.zst
-     mv usr/bin/lsd ~/.local/bin/
+      sudo apt update
+      sudo apt install cargo     
      ```
+     With Cargo installed, you can now install 'lsd'
+     ```sh
+      cargo install lsd
+     ```
+     After installation, ensure that Cargo's binary directory is in your system's PATH so that you can run lsd from any terminal session. And also create the alis for `lsd`
+     ```sh
+      echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> ~/.bashrc
+      echo "alias ls='lsd'" >> ~/.bashrc
+      source ~/.bashrc
+     ```
+
    - Update your `.bashrc` to add an alias for `ls` to use `lsd`.
 
 ## Setting Up Azure Cloud Shell
-Azure Cloud Shell is a browser-based terminal that gives you access to a Linux environment. Here’s how to set up Oh My Posh and `lsd` there:
+Azure Cloud Shell is a browser-based terminal that gives you access to a Linux environment. Follow the same instructions for the `WSL` but keep in mind that now, the theme file will be on Azure, so you need to change its reference in `.bashrc`
 
 1. **Install Oh My Posh** for Azure Cloud Shell:
-   - Download Oh My Posh:
-     ```sh
-     wget https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/posh-linux-amd64 -O ~/oh-my-posh
-     chmod +x ~/oh-my-posh
-     ```
-   - Edit `.bashrc` to add Oh My Posh:
-     ```sh
-     nano ~/.bashrc
-     ```
-     Add the following line:
-     ```sh
-     eval "$(~/oh-my-posh init bash --config ~/powerlevel10k_classic.omp.json)"
-     ```
-
+   - Follow the instructions for WSL
+   - The line for `.bashrc` should be:
+   ```sh
+    eval "$(oh-my-posh init bash --config /home/USER/.cache/oh-my-posh/themes/THEME-NAME.omp.json)"
+   ```
+   
 2. **Install `lsd` in Azure Cloud Shell**:
    - Since you don’t have `sudo` in Cloud Shell, you’ll need to manually extract `lsd`:
      ```sh
