@@ -54,9 +54,9 @@ A personalized command line can greatly improve your productivity. With the righ
       winget install LSDeluxe
       ```
    - Create a batch file (`ls.bat`) that allows you to use `lsd` in CMD:
-     ```cmd
-     @echo off
-     %USERPROFILE%\lsd\lsd.exe %*
+     ```sh
+      @echo off
+      %USERPROFILE%\lsd\lsd.exe %*
      ```
 
 ## Setting Up PowerShell
