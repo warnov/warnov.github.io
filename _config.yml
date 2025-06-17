@@ -58,8 +58,6 @@ analytics:
     id:
   fathom:
     id:
-  google_analytics:
-    id: G-86F3LY0CXK
 
 pageviews:
   provider: goatcounter   # ← antes vacío
