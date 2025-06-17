@@ -4,6 +4,8 @@
 theme: jekyll-theme-chirpy
 lang: en
 timezone: America/Bogota   # ← antes vacío
+google_analytics:
+  id: G-86F3LY0CXK
 
 # ────────────────────────────
 # 🔎 SEO / Branding
@@ -56,6 +58,8 @@ analytics:
     id:
   fathom:
     id:
+  google_analytics:
+    id: G-86F3LY0CXK
 
 pageviews:
   provider: goatcounter   # ← antes vacío
