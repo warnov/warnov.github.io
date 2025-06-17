@@ -41,7 +41,7 @@ Function calling in OpenAI is a powerful feature that allows you to integrate LL
 
 ## Step 6: Advanced Topic - Extracting Structured Information with Azure OpenAI Whisper and GPT-4
 
-### [Extracting Information with Azure OpenAI Whisper and GPT-4](http://warnov.com/@whisper-gpt-post)
+### [Extracting Information with Azure OpenAI Whisper and GPT-4](https://warnov.com/@whisper-gpt-post)
 
 Extracting structured information from recorded conversations can revolutionize how you interact with and analyze data. This post explores the integration of Azure OpenAI Whisper and GPT-4 models, showing you how to leverage these technologies to extract and utilize structured information effectively.
 
