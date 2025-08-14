@@ -2,7 +2,7 @@
 title: Getting Started with LLM Apps Development for Python Enthusiasts
 date: 2024-06-27 01:24:00 -0500
 categories: [GenAI, Development, OpenAI]
-tags: [azure, development, chatgpt, openai, python, vscode, cosmosdb, whisper, speech to text, azure functions]
+tags: [azure, development, GPT, openai, python, vscode, cosmosdb, whisper, speech to text, azure functions]
 image:
   path: /assets/img/posts/2024-06-26/2024-06-26-Getting-Started-LLM-Apps-Development-Header.jpg
 ---

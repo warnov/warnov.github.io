@@ -1,7 +1,7 @@
 ---
 title: Building a Technical Blog with GitHub Pages, Jekyll, and the Chirpy Theme
 date: 2025-06-17 02:10:00 -0500
-categories: [Gitub, Pages, Blog]
+categories: [GitHub, Pages, Blog]
 tags: [github pages, jekyll, chirpy, static site, personal blog]
 image:
   path: /assets/img/posts/2025-06-17-Building-a-Technical-Blog-with-GitHub-Pages-Jekyll-and-the-Chirpy-Theme.png
@@ -167,4 +167,4 @@ Deploying a Chirpy-themed blog with GitHub Pages and Jekyll is a fantastic way t
 
 Just stay aware that GitHub may update its rules for site builds. Always test and review GitHub Actions logs after pushes, especially when adding new content or adjusting your theme.
 
-It is also easy to [add analytics to your blog](https://blog.warnov.com/posts/Integrating-Google-Analytics-Into-Jekyll-Blog-On-Github-Pages-copy/), so you could review the performance of your posts.
+It is also easy to [add analytics to your blog](https://blog.warnov.com/posts/Integrating-Google-Analytics-Into-Jekyll-Blog-On-GitHub-Pages-copy/), so you could review the performance of your posts.

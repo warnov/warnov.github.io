@@ -2,7 +2,7 @@
 title: Whisper + GPT. Extracting Structured Information from Recorded Conversations with Python Azure Functions, and storing results in CosmosDB
 date:  2024-04-22 23:29:00 -0500
 categories: [GenAI, Development, Whisper]   
-tags: [azure, development, chatgpt, openai, python, vscode, cosmosdb, whisper, speech to text, azure functions]
+tags: [azure, development, GPT, openai, python, vscode, cosmosdb, whisper, speech to text, azure functions]
 image:
   path: /assets/img/posts/2024-04-22/header.png
 ---
@@ -19,7 +19,7 @@ Imagine a sales team that conducts numerous phone interviews with potential buye
 
 ## Implementation Steps Using Azure OpenAI Whisper and GPT-4 Models:
 
-> **Note:** This scenario is implemented in the [Github repo](https://warnov.com/@whisper-gpt) that supports this blog post.
+> **Note:** This scenario is implemented in the [GitHub repo](https://warnov.com/@whisper-gpt) that supports this blog post.
 
 This is a high level view of the flow:
 
