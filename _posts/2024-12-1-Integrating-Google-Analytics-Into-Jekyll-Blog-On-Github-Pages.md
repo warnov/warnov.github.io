@@ -4,7 +4,7 @@ date: 2024-12-01 20:35:00 -0500
 categories: [GitHub, Pages, Jekyll]
 tags: [jekyll, github pages, google analytics, chirpy, customization]
 image:
-  path: /assets/img/posts/2024-12-1-Integrating-Google-Analytics-Into-Jekyll-Blog-On-GitHub-Pages.webp
+  path: /assets/img/posts/2024-12-1-Integrating-Google-Analytics-Into-Jekyll.webp
 ---
 
 ### Integrating Google Analytics Into Jekyll Blog On GitHub Pages
