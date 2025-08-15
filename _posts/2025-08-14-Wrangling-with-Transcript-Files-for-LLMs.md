@@ -14,6 +14,9 @@ In the age of remote work and virtual meetings, platforms like Microsoft Teams h
 
 **VTTCleaner** is a Python tool designed to solve this problem. It transforms your Teams VTT transcripts into a clean, compact format, drastically reducing the token count and making them ready for LLM-powered analysis, summarization, and automation.
 
+- [VTTCleaner GitHub Repository](https://github.com/warnov/vttcleaner)
+
+
 ---
 
 ## Why Do You Need VTTCleaner?
