@@ -1,50 +1,92 @@
 ---
-title: "AI and the Future of Work: Why Creativity, Judgment, and Biology Are the Next Frontiers"
-date: 2025-09-01 00:00:00 -0500
-categories: [GenAI, Opinion]
-tags: [ai, genai, future, job]
+title: "Solved: Please provide role name"
+date: 2025-12-16
+categories: [Azure, IAM, IAC]
+tags: [azure, IAM, iac]
 image:
-  path: /assets/img/posts/2025-09-01-ai-future-work-hero.jpg
-cover: /assets/img/posts/2025-09-01-ai-future-work-hero.jpg
-description: "AI is reshaping not just repetitive work, but also creative and analytical roles, raising the bar for human skills like judgment and adaptability."
-author: [warnov] 
+  path: /assets/img/posts/2025-12-16-Solved-Please-provide-role-name.png
 ---
+If you work with Azure IAM, you've likely tried creating Custom Roles using a JSON definition file and the Azure CLI. It seems straightforward, but there is a specific behavior in the `az role definition create` command that can lead to frustrating errors like `please provide role name` or result in roles created with a GUID as their display name.
 
-## From Routine to Creative: How AI Expanded Its Reach
+Here is what I discovered about how the CLI actually parses the JSON and how to fix it.
 
-Generative AI tools are now capable of drafting marketing copy, writing the first draft of legal briefs, generating social media captions, analyzing basic datasets, and even producing a minimum viable version of a software application.
+## The Problem
 
-These are not merely “mechanical” tasks. They require creativity, contextual awareness, and technical grounding—skills we once assumed were uniquely human, at least at entry levels. While AI outputs still require supervision to avoid errors or hallucinations, the efficiency gains have led companies to question whether hiring a junior professional is always necessary when AI can handle **60–80%** of their workload.
+You have a JSON file (e.g., `role.json`) that looks technically correct. You might be used to ARM templates where `name` usually represents the Resource ID (a GUID). So, you structure your file like this:
 
-This shift doesn’t mean entire roles vanish overnight. Instead, it transforms the structure of work by hollowing out entry-level opportunities—the very stepping stones that once allowed young professionals to gain experience and grow into experts.
+```json
+{
+  "name": "a1b2c3d4-e5f6-7890-a1b2-c3d4e5f67890",
+  "roleName": "My Custom Operator",
+  "description": "...",
+  "permissions": [ ... ],
+  "assignableScopes": [ ... ]
+}
+```
 
-## The Mindset Shift: From Linear Careers to Lifelong Adaptability
+When you run the command:
 
-In the past, career paths followed a predictable arc: study, work, retire. That linear model is rapidly dissolving. Today’s workers must embrace a different mindset—one that sees careers as evolving journeys across multiple industries and roles.
+```bash
+az role definition create --role-definition @role.json
+```
 
-This calls for a toolkit of **durable, transferable skills**:
+**One of two things happens:**
 
-- **Judgment:** Not just choosing between good and bad answers, but identifying which of many “good” AI-generated answers best fits a specific context.
-- **Communication:** The ability to clearly formulate questions, structure problems, and interpret AI outputs.
-- **Deep Thinking:** Going beyond surface-level analysis to frame challenges in ways that make sense for both humans and machines.
-- **Adaptability:** With the average shelf life of a technical skill shrinking to about **2.5 years**, workers must be ready to pivot, re-skill, and enter new domains repeatedly.
+1.  **The Error:** The CLI fails with `please provide role name`. This is confusing because the property `roleName` is clearly there in the file.
+2.  **The Bad Mapping:** The role is created, but when you look at it in the Portal, its Display Name is `a1b2c3d4-e5f6-7890-a1b2-c3d4e5f67890` instead of "My Custom Operator".
 
-The future of work will reward those who see themselves not as fixed specialists but as **entrepreneurial learners**, equipped with a bouquet of skills that can be rearranged and redeployed as industries shift.
+## The Finding
 
-## The Role of AI as a General-Purpose Technology
+The issue lies in how the Azure CLI maps the input JSON properties during the creation process.
 
-One of the most important things to understand is that AI is not a passing trend. It is a **general-purpose technology**—like electricity, the internet, or the steam engine. Such technologies inevitably become part of the infrastructure of society. They trigger waves of transformation, hype cycles, and bursts, but ultimately they **reshape entire economies and industries**.
+Through testing, I found that **you should not put a GUID in the `name` field of your input JSON.**
 
-This means the timeline may be uncertain—three, eight, or fifteen years—but the direction is inevitable: AI will become the foundation on which we build future products, teams, and businesses.
+Even though `name` represents the unique ID in the resulting Azure resource, the CLI expects the input `name` field to contain the **Descriptive Name** (the same string you want for `roleName`).
 
-## Where to Look: The Next Frontiers
+When Azure processes this input:
+1.  It takes the string from your input `name`.
+2.  It assigns that string to the `roleName` (Display Name) property.
+3.  It **automatically generates** a new, valid GUID for the internal System ID and stores it in the `name` property. So when you query the role later, `name` will be a GUID, and `roleName` will be your descriptive name.
 
-While predicting new job titles is difficult, we can identify areas where AI will fuel growth. One of the most promising is **biology**. The convergence of AI and biological sciences is opening possibilities in drug discovery, synthetic biology, genetic research, and personalized healthcare. Tech leaders are increasingly pointing to biology as the next frontier where AI will unleash breakthroughs.
+## The Solution
 
-Other expanding frontiers include **robotics** and **space exploration**—fields that will demand new combinations of technical, creative, and adaptive skills.
+To ensure your role is created correctly and to avoid the "missing name" error, simply repeat your descriptive name in the `name` field.
 
-## Building a Fierce Toolkit for the Future
+### Correct JSON Format
 
-The challenge ahead is not just about learning how to code or mastering today’s software. It is about preparing for a landscape where AI tools will constantly evolve, demanding that humans bring **higher-order skills** to the table.
+```json
+{
+  "name": "SQL Backup Operator",
+  "description": "Allows exporting Azure SQL databases...",
+  "type": "Microsoft.Authorization/roleDefinitions",
+  "permissions": [
+    {
+      "actions": [
+        "Microsoft.Sql/servers/read",
+        "Microsoft.Sql/servers/databases/read"
+      ],
+      "notActions": [],
+      "dataActions": [],
+      "notDataActions": []
+    }
+  ],
+  "assignableScopes": [
+    "/subscriptions/your-subscription-id/resourceGroups/your-rg"
+  ]
+}
+```
 
-Those who can **think deeply, learn quickly, communicate effectively, and adapt relentlessly** will be equipped with a toolkit that transcends industries and technological shifts. In this sense, the future of work is not defined by the jobs AI takes away, but by the **resilience and creativity** of the people who learn to thrive alongside it.
+### The Command
+
+Now, you can run the standard command without issues:
+
+```bash
+az role definition create --role-definition @role_fixed.json
+```
+
+## Summary
+
+* **Input `name`**: Should be the descriptive string (e.g., "My Role").
+* **Output ID**: Azure will handle the GUID generation for you.
+
+By aligning the `name` property with the human-readable name, the Azure CLI parses the file correctly, and your Custom Role appears in the portal exactly as expected.
