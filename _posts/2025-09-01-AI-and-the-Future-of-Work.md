@@ -48,3 +48,14 @@ Other expanding frontiers include **robotics** and **space exploration**—field
 The challenge ahead is not just about learning how to code or mastering today’s software. It is about preparing for a landscape where AI tools will constantly evolve, demanding that humans bring **higher-order skills** to the table.
 
 Those who can **think deeply, learn quickly, communicate effectively, and adapt relentlessly** will be equipped with a toolkit that transcends industries and technological shifts. In this sense, the future of work is not defined by the jobs AI takes away, but by the **resilience and creativity** of the people who learn to thrive alongside it.
+
+<p>If you want a deeper dive into how I frame these shifts, watch my TEDx talk <em>Inteligencia Artesanal</em> (in Spanish), where I expand on this topic with real-world examples.</p>
+<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:100%;margin-bottom:1.5rem;">
+  <iframe
+    src="https://www.youtube.com/embed/uL6E_GdOG5M?rel=0"
+    title="TEDx Talk – Inteligencia Artesanal"
+    style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen>
+  </iframe>
+</div>
