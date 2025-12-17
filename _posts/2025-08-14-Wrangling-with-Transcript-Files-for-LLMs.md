@@ -6,8 +6,6 @@ tags: [azure, IAM, iac]
 image:
   path: /assets/img/posts/2025-12-16-Solved-Please-provide-role-name.png
 ---
-# Solved: The "Please provide role name" Error When Creating Azure Custom Roles
-
 If you work with Azure IAM, you've likely tried creating Custom Roles using a JSON definition file and the Azure CLI. It seems straightforward, but there is a specific behavior in the `az role definition create` command that can lead to frustrating errors like `please provide role name` or result in roles created with a GUID as their display name.
 
 Here is what I discovered about how the CLI actually parses the JSON and how to fix it.
