@@ -46,7 +46,7 @@ Even though `name` represents the unique ID in the resulting Azure resource, the
 When Azure processes this input:
 1.  It takes the string from your input `name`.
 2.  It assigns that string to the `roleName` (Display Name) property.
-3.  It **automatically generates** a new, valid GUID for the internal System ID.
+3.  It **automatically generates** a new, valid GUID for the internal System ID and stores it in the `name` property. So when you query the role later, `name` will be a GUID, and `roleName` will be your descriptive name.
 
 ## The Solution
 
